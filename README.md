@@ -17,13 +17,13 @@ developers, and bring smart products to the world."
         cosm = new cosm.Cosm('insert API key here'),
         feed = new cosm.Feed(cosm, {id: 12345});
 
-    feed.addPoint(1.234); # Adds a data point with the timestamp now
+    feed.addPoint(1.234); // Adds a data point with the timestamp now
 
-    # Creates a datapoint at a specific timestamp
+    // Creates a datapoint at a specific timestamp
     feed.addPoint(2.345, new Date(2012, 11, 11, 11, 11);
 
-    # Creates a datapoint now, with a callback - this API will likely change to
-    # be a bit nicer to use.
+    // Creates a datapoint now, with a callback - this API will likely change to
+    // be a bit nicer to use.
     feed.addPoint(3.456, undefined, function () {
         console.log("Point added...");
     });
