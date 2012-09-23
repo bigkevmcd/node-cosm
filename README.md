@@ -15,25 +15,30 @@ developers, and bring smart products to the world."
 
     var cosm = require('cosm');
         cosm = new cosm.Cosm('insert API key here'),
-        feed = new cosm.Feed(cosm, {id: 12345});
+        feed = new cosm.Feed(cosm, {id: 12345}),
+        stream = new cosm.Datastream(client, feed, {id: 1})
 
-    feed.addPoint(1.234); // Adds a data point with the timestamp now
+    stream.addPoint(1.234); // Adds a data point with the timestamp now
 
     // Creates a datapoint at a specific timestamp
-    feed.addPoint(2.345, new Date(2012, 11, 11, 11, 11);
+    stream.addPoint(2.345, new Date(2012, 11, 11, 11, 11);
 
     // Creates a datapoint now, with a callback - this API will likely change to
     // be a bit nicer to use.
-    feed.addPoint(3.456, undefined, function () {
+    stream.addPoint(3.456, undefined, function () {
         console.log("Point added...");
     });
 ```
 
 ## READ THIS
 
-You can queue data to be uploaded, by setting the queue_size for the Feed, the
+You can queue data to be uploaded, by setting the queue_size for the Datastream, the
 API will only push data to Cosm when the queue is full.
 
+
+```javascript
+    var stream = new cosm.Datastream(client, feed, {id: 1, queue_size: 20});
+```
 The queue_size defaults to 1, so data is pushed as it's added.
 
 # License
