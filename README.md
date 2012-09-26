@@ -14,7 +14,7 @@ developers, and bring smart products to the world."
 ```javascript
 
     var cosm = require('cosm');
-        cosm = new cosm.Cosm('insert API key here'),
+        client = new cosm.Cosm('insert API key here'),
         feed = new cosm.Feed(cosm, {id: 12345}),
         stream = new cosm.Datastream(client, feed, {id: 1})
 
