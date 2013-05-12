@@ -1,7 +1,9 @@
 'use strict';
 
 var request = require('request'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    querystring = require('querystring'),
+    url = require('url');
 
 function Cosm(apiKey, options) {
     var self = this;
@@ -67,6 +69,46 @@ Queue.prototype.dequeue = function () {
         this.offset = 0;
     }
     return item;
+};
+
+Cosm.prototype.create = function(json, callback) {
+    var self = this;
+
+    request.post(
+         {url: self.server + '/v2/feeds',
+          json: json,
+          headers: {'X-ApiKey': self.apiKey}
+    }, function (error, response, body) {/* jshint unused: false */
+        var pathname;
+
+        if (typeof callback !== 'undefined') {
+            if ((!!response) && (response.statusCode === 201)) {
+                pathname = url.parse(response.headers.location).pathname.split('/');
+                callback(null, pathname[pathname.length - 1]);
+            } else {
+                callback(error);
+            }
+        }
+    });
+};
+
+Cosm.prototype.list = function(params, callback) {
+    var self = this;
+    var query = querystring.stringify(params);
+    
+    if (query.length !== 0) query = '?' + query;
+    request.get(
+         {url: self.server + '/v2/feeds/' + query,
+          headers: {'X-ApiKey': self.apiKey}
+    }, function (error, response, body) {
+        if (typeof callback !== 'undefined') {
+            if ((!!response) && (response.statusCode === 200)) {
+                callback(null, JSON.parse(body));
+            } else {
+                callback(error);
+            }
+        }
+    });
 };
 
 Cosm.prototype.get = function (id, callback) {
@@ -182,6 +224,41 @@ Feed.prototype.addTag = function (tag) {
 
 Feed.prototype.removeTag = function (tag) {
   this.tags.splice(this.tags.indexOf(tag), 1);
+};
+
+Feed.prototype.get = function(callback) {
+    var self = this;
+     request.get(
+         {url: self._cosm.server + '/v2/feeds/' + self.id + '.json',
+          headers: {'X-ApiKey': self._cosm.apiKey}
+    }, function (error, response, body) {
+        if (typeof callback !== 'undefined') {
+            if ((!!response) && (response.statusCode === 200)) {
+                callback(null, JSON.parse(body));
+            } else {
+                callback(error);
+            }
+        }
+    });
+};
+
+Feed.prototype.addStream = function(json, callback) {
+    var self = this;
+
+    json = { version : '1.0.0', datastreams : [ json ] };
+    request.post(
+         {url: self._cosm.server + '/v2/feeds/' + self.id + '/datastreams',
+          json: json,
+          headers: {'X-ApiKey': self._cosm.apiKey}
+    }, function (error, response, body) {
+        if (typeof callback !== 'undefined') {
+            if ((!!response) && (response.statusCode === 201)) {
+                callback(null, body);
+            } else {
+                callback(error);
+            }
+        }
+    });
 };
 
 Feed.prototype.save = function (callback) {
