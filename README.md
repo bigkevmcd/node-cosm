@@ -30,6 +30,35 @@ developers, and bring smart products to the world."
     });
 ```
 
+You can also create feeds, list existing feeds, add streams to a feed, and list streams associated with a feed:
+
+    client.create({ }, function(err, id) {
+      if (err) return ...;
+      
+      feed2 = new cosm.Feed(cosm, { id: id });
+
+      feed2.get(function(err, data) {
+        if (err) return ...;
+
+        // data is a json representation of the stream, including datastream metadata (if any)
+        data.datastreams = data.datastreams || [];
+      });
+
+      feed2.addStream({ id: 2 }, function(err, body) {
+        if (err) return ...;
+
+        // body is presently null
+      });
+    });
+
+    client.list({ /* query parameters, if any */ }, function(error, json) {
+      if (err) return ...;
+      
+      // json is the metadata for the stream
+    });
+
+
+
 ## READ THIS
 
 You can queue data to be uploaded, by setting the queue_size for the Datastream, the
