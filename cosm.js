@@ -117,10 +117,9 @@ Cosm.prototype.get = function (id, callback) {
          {url: self.server + '/v2/feeds/' + id,
           headers: {'X-ApiKey': self.apiKey}
     }, function (error, response, body) {
-        body = JSON.parse(body);
         if (typeof callback !== 'undefined') {
             if (response.statusCode === 200) {
-                callback(null, new Feed(self, body));
+                callback(null, new Feed(self, JSON.parse(body)));
             } else {
                 callback(body);
             }
