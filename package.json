@@ -1,10 +1,20 @@
 {
   "name": "cosm",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A library for interfacing with Cosm http://cosm.com/",
   "main": "cosm.js",
   "author": "Kevin McDermott <kevin@bigkevmcd.com>",
+  "contributors": [
+    "Marshall Rose <mrose17@gmail.com> (https://github.com/mrose17)"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheThingSystem/node-cosm.git"
+   },
+  "bugs": {
+    "url": "https://github.com/TheThingSystem/node-cosm/issues"
+   },
   "devDependencies": {
     "jasmine-node": "*",
     "nock": "~0.13.4",
